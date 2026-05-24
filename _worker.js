@@ -3,8 +3,7 @@ export default {
     const url = new URL(request.url);
     const payTo = env.PAY_TO || "0x970c7e8e0e366e817264aa2aa3634622d4eeaddb";
 
-    // Xử lý route thanh toán x402
-    if (url.pathname === "/api/premium" || url.pathname === "/pay") {
+    if (url.pathname === "/pay" || url.pathname === "/api/premium") {
       return new Response(
         JSON.stringify({ message: "Payment Required" }),
         {
@@ -51,14 +50,18 @@ export default {
         </div>
 
         <script>
-          function pay() {
-            window.location.href = '/pay';
+          async function pay() {
+            try {
+              const res = await fetch('/pay');
+              if (res.status === 402) {
+                // Trigger mạnh nhất cho Coinbase Wallet
+                window.location.href = '/pay';
+              }
+            } catch(e) {}
           }
         </script>
       </body>
       </html>
-    `, {
-      headers: { "Content-Type": "text/html" }
-    });
+    `, { headers: { "Content-Type": "text/html" } });
   }
 }
