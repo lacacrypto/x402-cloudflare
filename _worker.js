@@ -3,22 +3,26 @@ export default {
     const url = new URL(request.url);
     const payTo = env.PAY_TO || "0x970c7e8e0e366e817264aa2aa3634622d4eeaddb";
 
+    // Xử lý route thanh toán x402
     if (url.pathname === "/api/premium" || url.pathname === "/pay") {
-      return new Response(JSON.stringify({ message: "Payment Required" }), {
-        status: 402,
-        headers: {
-          "Content-Type": "application/json",
-          "x402-payment-required": JSON.stringify({
-            accepts: [{
-              scheme: "exact",
-              price: "$0.1",
-              network: "eip155:8453",
-              payTo: payTo,
-              description: "Mở khóa nội dung premium"
-            }]
-          })
+      return new Response(
+        JSON.stringify({ message: "Payment Required" }),
+        {
+          status: 402,
+          headers: {
+            "Content-Type": "application/json",
+            "x402-payment-required": JSON.stringify({
+              accepts: [{
+                scheme: "exact",
+                price: "$0.1",
+                network: "eip155:8453",
+                payTo: payTo,
+                description: "Mở khóa nội dung premium"
+              }]
+            })
+          }
         }
-      });
+      );
     }
 
     // Trang chủ
@@ -53,6 +57,8 @@ export default {
         </script>
       </body>
       </html>
-    `, { headers: { "Content-Type": "text/html" } });
+    `, {
+      headers: { "Content-Type": "text/html" }
+    });
   }
 }
