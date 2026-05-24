@@ -1,11 +1,9 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    
-    // Route cho thanh toán x402
-    if (url.pathname === "/api/premium") {
-      const payTo = env.PAY_TO || '';
+    const payTo = env.PAY_TO || "0x970c7e8e0e366e817264aa2aa3634622d4eeaddb";
 
+    if (url.pathname === "/api/premium" || url.pathname === "/pay") {
       return new Response(JSON.stringify({ message: "Payment Required" }), {
         status: 402,
         headers: {
@@ -33,7 +31,7 @@ export default {
         <title>x402 Payment</title>
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
-      <body class="bg-gray-950 text-white min-h-screen flex items-center justify-center">
+      <body class="bg-gray-950 text-white min-h-screen flex items-center justify-center p-4">
         <div class="max-w-md w-full bg-gray-900 rounded-3xl p-10 text-center">
           <h1 class="text-4xl font-bold mb-2">🔐 x402 Payment</h1>
           <p class="text-gray-400 mb-8">Thanh toán USDC trên Base</p>
@@ -50,13 +48,11 @@ export default {
 
         <script>
           function pay() {
-            window.location.href = '/api/premium';
+            window.location.href = '/pay';
           }
         </script>
       </body>
       </html>
-    `, {
-      headers: { "Content-Type": "text/html" }
-    });
+    `, { headers: { "Content-Type": "text/html" } });
   }
 }
