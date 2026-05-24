@@ -2,14 +2,15 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     
+    // Route cho thanh toán x402
     if (url.pathname === "/api/premium") {
       const payTo = env.PAY_TO || '';
 
       return new Response(JSON.stringify({ message: "Payment Required" }), {
         status: 402,
         headers: {
-          'Content-Type': 'application/json',
-          'x402-payment-required': JSON.stringify({
+          "Content-Type": "application/json",
+          "x402-payment-required": JSON.stringify({
             accepts: [{
               scheme: "exact",
               price: "$0.1",
@@ -55,7 +56,7 @@ export default {
       </body>
       </html>
     `, {
-      headers: { 'Content-Type': 'text/html' }
+      headers: { "Content-Type": "text/html" }
     });
   }
 }
