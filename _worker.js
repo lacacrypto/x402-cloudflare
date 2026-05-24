@@ -3,6 +3,7 @@ export default {
     const url = new URL(request.url);
     const payTo = env.PAY_TO || "0x970c7e8e0e366e817264aa2aa3634622d4eeaddb";
 
+    // Route x402
     if (url.pathname === "/pay" || url.pathname === "/api/premium") {
       return new Response(
         JSON.stringify({ message: "Payment Required" }),
@@ -24,40 +25,35 @@ export default {
       );
     }
 
-    // Trang chủ
+    // Trang chủ đơn giản
     return new Response(`
       <!DOCTYPE html>
       <html lang="vi">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>x402 Payment</title>
+        <title>x402 - Thanh toán 0.1 USDC</title>
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
-      <body class="bg-gray-950 text-white min-h-screen flex items-center justify-center p-4">
+      <body class="bg-gray-950 text-white min-h-screen flex items-center justify-center">
         <div class="max-w-md w-full bg-gray-900 rounded-3xl p-10 text-center">
-          <h1 class="text-4xl font-bold mb-2">🔐 x402 Payment</h1>
+          <h1 class="text-5xl font-bold mb-2">🔐 x402</h1>
           <p class="text-gray-400 mb-8">Thanh toán USDC trên Base</p>
           
-          <div class="bg-gray-800 rounded-2xl p-6 mb-8">
-            <p class="text-gray-400">Nội dung Premium</p>
-            <p class="text-4xl font-bold text-green-400 mt-1">$0.1 USDC</p>
+          <div class="bg-gray-800 rounded-2xl p-8 mb-8">
+            <p class="text-gray-400 text-sm">NỘI DUNG PREMIUM</p>
+            <p class="text-5xl font-bold text-green-400 mt-2">$0.1 USDC</p>
           </div>
 
-          <button onclick="pay()" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl text-xl font-medium">
+          <button onclick="pay()" 
+                  class="w-full bg-blue-600 hover:bg-blue-700 py-6 rounded-2xl text-2xl font-medium">
             Mở khóa ngay bằng x402
           </button>
         </div>
 
         <script>
-          async function pay() {
-            try {
-              const res = await fetch('/pay');
-              if (res.status === 402) {
-                // Trigger mạnh nhất cho Coinbase Wallet
-                window.location.href = '/pay';
-              }
-            } catch(e) {}
+          function pay() {
+            window.location.href = '/pay';
           }
         </script>
       </body>
